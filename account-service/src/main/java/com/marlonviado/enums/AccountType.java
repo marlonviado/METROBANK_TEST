@@ -1,14 +1,20 @@
 package com.marlonviado.enums;
 
+import java.util.Arrays;
+
 public enum AccountType {
 	
 	S("Savings"),
 	C("Checking");
 
-	private final String description;
+	private String description;
+	
+	AccountType() {
+		this.description="Savings";
+	}
 
 	AccountType(String description) {
-	this.description = description;
+		this.description = description;
 	}
 
 	public String getDescription() {
@@ -21,7 +27,13 @@ public enum AccountType {
 				return type;
 			}
 		}
-		throw new IllegalArgumentException("No Account Type found with description: " + description);
+		return S;
+	}
+	
+	// Check if account type is valid
+	public static boolean contains(String value) {
+		return Arrays.stream(AccountType.values())
+		.anyMatch(accountType -> accountType.name().equalsIgnoreCase(value));
 	}
 	
 }

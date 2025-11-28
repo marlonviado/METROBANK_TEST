@@ -28,13 +28,14 @@ public class AccountService {
 	@Transactional
 	@Modifying
 	public AccountDTO saveAccount(AccountDTO accountDTO) {
+
 		String customerNo = NumberUtil
 				.generateCustomerNumber(8);
 		accountDTO.setCustomerNumber(customerNo);
 
 		String accountNo = NumberUtil
 				.generateCustomerNumber(6);
-
+		
 		String types = accountDTO.getAccountType()
 				.getDescription()=="Savings" ? "Savings" : "Checking";
 		

@@ -20,9 +20,10 @@ import com.marlonviado.request.Request;
 import com.marlonviado.response.Response;
 import com.marlonviado.service.AccountService;
 import com.marlonviado.validator.ValidEmailValidator;
-
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/account")
 public class AccountController {
@@ -33,11 +34,11 @@ public class AccountController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Response<AccountDTO>> createAccount(@RequestBody @Valid Request request) {
-		ValidEmailValidator emailValid = new ValidEmailValidator();
+
+		ValidEmailValidator email = new ValidEmailValidator();
 		
-		//if(request.getRequest().getCustomerEmail().length()<=0 || 
-		//		!request.getRequest().getCustomerEmail().contains("@")) {
-		if(!emailValid.isValid(request.getRequest().getCustomerEmail(), null)) {
+		if(!email.isValid(request.getRequest().getCustomerEmail(), null)) {
+			log.error("Error Email format!");
 			return ResponseEntity
                     .badRequest()
                     .body(Response.<AccountDTO>builder()
@@ -46,6 +47,7 @@ public class AccountController {
                 			.transactionStatusDescription("Email is required field".toUpperCase())
                 			.build());
 		}
+
 		AccountDTO account = accountService
 				.saveAccount(request.getRequest());
 		account.setAccountType(null);
