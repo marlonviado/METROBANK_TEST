@@ -43,10 +43,6 @@ public class GlobalExceptionHandler extends RuntimeException {
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<Response<?>> accountTypeInvalidException(HttpMessageNotReadableException ex) {
-
-		Response<?> orderResponse = new Response<>();
-		orderResponse.setTransactionStatusCode(HttpStatus.NOT_FOUND.value());
-		orderResponse.setTransactionStatusDescription("Account Type is invalid! You can use either S or C");
 		return ResponseEntity
                 .badRequest()
                 .body(Response.<Response<?>>builder()
